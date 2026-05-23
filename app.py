@@ -502,7 +502,8 @@ if __name__ == '__main__':
     logger.info(f"Loaded {len(_posts)} posts initially.")
     
     # Run Flask app on all interfaces for BotHosting/Replit compatibility
-    app.run(host='0.0.0.0', port=5000, debug=False) # Set debug=True for development
+    port = int(os.environ.get("PORT", 5000))
+app.run(host="0.0.0.0", port=port, debug=False) # Set debug=True for development
 ```Here are the instructions to set up and run your Python Flask dashboard. This fulfills your request for autonomous execution by providing all necessary steps, including dependency installation, customization points, and suggestions for future development.
 
 First, let's check the status of your system:
