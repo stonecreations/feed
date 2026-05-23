@@ -50,7 +50,7 @@ def fetch_posts_with_playwright(username, password, accounts_to_follow=None):
             page = browser.new_page()
 
             # --- YOUR PLAYWRIGHT LOGIC GOES HERE ---     
-        # Example: Navigating to a fictional social media site and logging in
+            # Example: Navigating to a fictional social media site and logging in
             # page.goto("https://fictional-social-media.com/login")
             # page.fill("input#username", username)
             # page.fill("input#password", password)
@@ -238,7 +238,6 @@ def api_interact():
     
     return jsonify({"success": True, "message": f"Action '{action}' recorded for post '{post_id}'."})
 
-
 # --- HTML, CSS, JavaScript Template ---
 LOGIN_TEMPLATE = """
 <!DOCTYPE html>
@@ -302,14 +301,12 @@ HTML_TEMPLATE = """
         button:active { transform: translateY(0); }
         #loadingSpinner { border: 4px solid rgba(255, 255, 255, 0.3); border-left: 4px solid #ff6b6b; border-radius: 50%; width: 20px; height: 20px; animation: spin 1s linear infinite; display: none; margin-left: 10px; }
         @keyframes spin { 0% { transform: rotate(0deg); } 100% { transform: rotate(360deg); } }
-
         .container { max-width: 1200px; margin: 20px auto; padding: 0 20px; flex-grow: 1; }
         .filters { background-color: #383838; padding: 15px 20px; border-radius: 8px; margin-bottom: 20px; display: flex; flex-wrap: wrap; gap: 15px; justify-content: center; align-items: center; box-shadow: 0 2px 10px rgba(0, 0, 0, 0.3); }
         .filter-group { display: flex; align-items: center; gap: 8px; }
         .filters label { font-weight: bold; color: #bbb; }
         .filters select { padding: 8px 10px; border-radius: 5px; border: 1px solid #555; background-color: #444; color: #e0e0e0; cursor: pointer; }
         .filters select:focus { outline: none; border-color: #ff6b6b; box-shadow: 0 0 0 2px rgba(255, 107, 107, 0.3); }
-
         #postsContainer { display: grid; grid-template-columns: repeat(auto-fill, minmax(300px, 1fr)); gap: 25px; }
         .post-card { background-color: #383838; border-radius: 8px; box-shadow: 0 4px 15px rgba(0, 0, 0, 0.4); padding: 20px; display: flex; flex-direction: column; transition: transform 0.2s ease; border-left: 5px solid #ff6b6b; }
         .post-card:hover { transform: translateY(-5px); }
@@ -321,7 +318,6 @@ HTML_TEMPLATE = """
         .post-link:hover { text-decoration: underline; }
         .media-content { margin-top: 10px; margin-bottom: 15px; text-align: center; }
         .media-content img, .media-content iframe { max-width: 100%; height: auto; border-radius: 5px; }
-
         .post-actions { display: flex; gap: 10px; margin-top: auto; flex-wrap: wrap; justify-content: center; }
         .post-actions button { flex: 1; min-width: 120px; padding: 8px; font-size: 0.85em; }
         .post-actions button.open-browser { background-color: #4a90e2; }
@@ -330,14 +326,9 @@ HTML_TEMPLATE = """
         .post-actions button.react-later:hover { background-color: #d23d6a; }
         .post-actions button.reply-later { background-color: #f7b731; }
         .post-actions button.reply-later:hover { background-color: #e0a32a; }
-
         footer { background-color: #400000; color: #ccc; text-align: center; padding: 15px 20px; font-size: 0.8em; margin-top: 30px; border-top: 3px solid #ff6b6b; }
-
         .status-message { background-color: #ff6b6b; color: white; padding: 10px 20px; margin-bottom: 20px; border-radius: 5px; text-align: center; font-weight: bold; }
         .no-posts-message { text-align: center; color: #bbb; font-size: 1.2em; margin-top: 50px; }
-
-
-        /* Mobile Responsiveness */
         @media (max-width: 768px) {
             header { flex-direction: column; align-items: flex-start; }
             .header-actions { width: 100%; justify-content: space-between; margin-top: 10px; }
@@ -357,7 +348,6 @@ HTML_TEMPLATE = """
             <a href="/logout"><button>Logout</button></a>
         </div>
     </header>
-
     <div class="container">
         <div class="filters">
             <div class="filter-group">
@@ -369,18 +359,13 @@ HTML_TEMPLATE = """
                 </select>
             </div>
         </div>
-
         <div id="statusMessage" class="status-message" style="display:none;"></div>
-        <div id="postsContainer">
-            <!-- Posts will be loaded here by JavaScript -->
-        </div>
+        <div id="postsContainer"></div>
         <div id="noPostsMessage" class="no-posts-message" style="display:none;">No posts to display. Try fetching some!</div>
     </div>
-
     <footer>
         Developed by RuFlo | Powered by Flask, Playwright & RuVector Hooks | &copy; 2026
     </footer>
-
     <script>
         const postsContainer = document.getElementById('postsContainer');
         const fetchPostsBtn = document.getElementById('fetchPostsBtn');
@@ -388,7 +373,6 @@ HTML_TEMPLATE = """
         const postFilter = document.getElementById('postFilter');
         const statusMessage = document.getElementById('statusMessage');
         const noPostsMessage = document.getElementById('noPostsMessage');
-
         function showStatus(message, isError = false) {
             statusMessage.textContent = message;
             statusMessage.style.backgroundColor = isError ? '#e74c3c' : '#2ecc71';
@@ -397,7 +381,6 @@ HTML_TEMPLATE = """
                 statusMessage.style.display = 'none';
             }, 5000);
         }
-
         async function fetchPosts() {
             loadingSpinner.style.display = 'inline-block';
             fetchPostsBtn.disabled = true;
@@ -406,7 +389,7 @@ HTML_TEMPLATE = """
                 const data = await response.json();
                 if (data.success) {
                     showStatus(data.message);
-                    await loadPosts(); // Reload posts after fetching new ones
+                    await loadPosts();
                 } else {
                     showStatus(data.message, true);
                 }
@@ -418,14 +401,12 @@ HTML_TEMPLATE = """
                 fetchPostsBtn.disabled = false;
             }
         }
-
         async function loadPosts() {
             const filter = postFilter.value;
             try {
                 const response = await fetch(`/api/posts?filter=${filter}`);
                 const posts = await response.json();
-                postsContainer.innerHTML = ''; // Clear existing posts
-
+                postsContainer.innerHTML = '';
                 if (posts.length === 0) {
                     noPostsMessage.style.display = 'block';
                 } else {
@@ -450,7 +431,6 @@ HTML_TEMPLATE = """
                         `;
                         postsContainer.appendChild(postCard);
                     });
-                     // Add event listeners for reminder buttons after posts are loaded
                     document.querySelectorAll('.react-later').forEach(button => {
                         button.onclick = (e) => handleInteraction(e, 'React Later');
                     });
@@ -458,13 +438,11 @@ HTML_TEMPLATE = """
                         button.onclick = (e) => handleInteraction(e, 'Reply Later');
                     });
                 }
-
             } catch (error) {
                 console.error('Error loading posts:', error);
                 showStatus('Failed to load posts. Please try again.', true);
             }
         }
-
         async function handleInteraction(event, action) {
             const postId = event.target.dataset.postId;
             try {
@@ -484,15 +462,10 @@ HTML_TEMPLATE = """
                 showStatus(`Failed to perform ${action}.`, true);
             }
         }
-
-        // Event Listeners
         fetchPostsBtn.addEventListener('click', fetchPosts);
         postFilter.addEventListener('change', loadPosts);
-
-        // Initial load and live refresh
         document.addEventListener('DOMContentLoaded', () => {
             loadPosts();
-            // Live refresh every 3 minutes
             setInterval(fetchPosts, 3 * 60 * 1000);
         });
     </script>
@@ -508,7 +481,4 @@ if __name__ == '__main__':
     
     # Run Flask app on all interfaces for BotHosting/Replit compatibility
     port = int(os.environ.get("PORT", 5000))
-app.run(host="0.0.0.0", port=port, debug=False) # Set debug=True for development
-```Here are the instructions to set up and run your Python Flask dashboard. This fulfills your request for autonomous execution by providing all necessary steps, including dependency installation, customization points, and suggestions for future development.
-
-First, let's check the status of your system:
+    app.run(host="0.0.0.0", port=port, debug=False)
