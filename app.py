@@ -39,13 +39,18 @@ def fetch_posts_with_playwright(username, password, accounts_to_follow=None):
     """
     logger.info("Starting Playwright post fetching simulation...")
     new_posts = []
+
     try:
         with sync_playwright() as p:
-            browser = p.chromium.launch(headless=True) # Set headless=False to see the browser
+            browser = p.chromium.launch(
+                headless=True,
+                args=["--no-sandbox", "--disable-dev-shm-usage"]
+            )
+
             page = browser.new_page()
 
-            # --- YOUR PLAYWRIGHT LOGIC GOES HERE ---
-            # Example: Navigating to a fictional social media site and logging in
+            # --- YOUR PLAYWRIGHT LOGIC GOES HERE ---     
+        # Example: Navigating to a fictional social media site and logging in
             # page.goto("https://fictional-social-media.com/login")
             # page.fill("input#username", username)
             # page.fill("input#password", password)
